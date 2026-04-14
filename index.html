@@ -2,155 +2,165 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>會議室視訊鏡頭採購</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Comparison and Technical Analysis</title>
     <style>
-        body { font-family: "Microsoft JhengHei", Arial, sans-serif; line-height: 1.6; color: #333; max-width: 1200px; margin: 20px auto; padding: 0 20px; }
-        h2 { color: #000000; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
-        th { background-color: #3498db; color: white; white-space: nowrap; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        tr:hover { background-color: #f1f1f1; }
-        .spec-name { font-weight: bold; background-color: #fdf2e9; width: 150px; color: #d35400; }
-        .price { color: #e74c3c; font-weight: bold; }
-        .status-yes { color: #27ae60; font-weight: bold; }
-        .status-no { color: #7f8c8d; font-style: italic; }
-        .link-btn { display: inline-block; padding: 6px 12px; background-color: #e74c3c; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
-        .link-btn:hover { background-color: #c0392b; }
-        ul { padding-left: 20px; margin: 0; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body, html { height:100%; background:#0a0a0a; font-family:"Microsoft JhengHei", Arial, sans-serif; overflow:hidden; color:white; }
+        
+        .container { display:flex; flex-direction:column; height:100vh; }
+        
+        .header {
+            background:#1f1f1f;
+            padding:15px 20px;
+            text-align:center;
+            font-size:20px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        iframe {
+            flex:1;
+            border:none;
+            width:100%;
+            background:#111;
+        }
+        
+        .controls {
+            background:#1f1f1f;
+            padding:12px 20px;
+            display:flex;
+            flex-wrap:wrap;
+            align-items:center;
+            gap:10px;
+            justify-content:center;
+            box-shadow:0 -2px 10px rgba(0,0,0,0.5);
+        }
+        
+        button {
+            padding:10px 16px;
+            font-size:15px;
+            background:#0066cc;
+            color:white;
+            border:none;
+            border-radius:4px;
+            cursor:pointer;
+        }
+        
+        button:hover { background:#0055aa; }
+        
+        .auto-btn {
+            background:#28a745;
+        }
+        .auto-btn.active {
+            background:#dc3545;
+        }
+        
+        .info {
+            font-size:14px;
+            margin-left:10px;
+            opacity:0.9;
+        }
+        
+        .page-info {
+            margin-left:auto;
+            font-size:14px;
+            opacity:0.85;
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            2026 CRM 比較與技術分析報告
+        </div>
+        
+        <iframe id="pdfFrame" 
+                src="20260415_CRM_Comparison_and_Technical_Analysis_Andy.pdf" 
+                title="CRM Comparison and Technical Analysis">
+        </iframe>
+        
+        <div class="controls">
+            <button onclick="prevPage()">← 上一頁</button>
+            <button onclick="nextPage()">下一頁 →</button>
+            
+            <button id="autoBtn" class="auto-btn" onclick="toggleAutoPlay()">
+                ▶ 開啟自動翻頁
+            </button>
+            
+            <button onclick="toggleFullscreen()">全螢幕</button>
+            
+            <div class="page-info" id="pageInfo">
+                頁碼載入中...
+            </div>
+            
+            <div class="info">
+                鍵盤 ← → 翻頁｜自動翻頁間隔可調整（目前 8 秒）
+            </div>
+        </div>
+    </div>
 
-<h2>中大型會議室視訊設備</h2>
+    <script>
+        const iframe = document.getElementById('pdfFrame');
+        const autoBtn = document.getElementById('autoBtn');
+        const pageInfo = document.getElementById('pageInfo');
+        
+        let autoInterval = null;
+        let isAutoPlaying = false;
+        let intervalTime = 8000;   // 預設 8 秒翻一頁（可自行修改）
 
-<table>
-    <thead>
-        <tr>
-            <th>規格 \ 產品名稱</th>
-            <th>Logitech Rally AI Camera Pro</th>
-            <th>AVer CAM520 Pro3</th>
-            <th>Yealink UVC84</th>
-            <th>Logitech MeetUp 2</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="spec-name">預估售價</td>
-            <td class="price">需找經銷商報價，價位約6萬上下</td>
-            <td class="price">PCHome 售價 40,425 元</td>
-            <td class="price">需找經銷商報價，價位約3萬上下</td>
-            <td class="price">61600 羅技官方售價</td>
-        </tr>
-		<tr>
-            <td class="spec-name">產品發布年份</td>
-            <td>2026 年 1 月 (目前市面上最新一代旗艦)</td>
-            <td>2023 年 (目前為圓展 AVer 的專業 PTZ 旗艦現役機型)</td>
-            <td>2022 年 (目前仍為 Yealink 中大型空間的主力銷售機型)</td>
-            <td>2024 年底 / 2025 年初 (2026 年市場上的最新主流款)</td>
-        </tr>
-        <tr>
-            <td class="spec-name">音訊配置<br>(喇叭 / 麥克風)</td>
-            <td>
-                <span class="status-no">無內建喇叭</span><br>
-                <span class="status-no">無內建麥克風</span><br>
-                <small>(純攝影機，需外接音訊系統)</small>
-            </td>
-            <td>
-                <span class="status-no">無內建喇叭</span><br>
-                <span class="status-no">無內建麥克風</span><br>
-                <small>(純攝影機，需外接音訊系統)</small>
-            </td>
-            <td>
-                <span class="status-no">無內建喇叭</span><br>
-                <span class="status-no">無內建麥克風</span><br>
-                <small>(純攝影機，需外接音訊系統)</small>
-            </td>
-            <td>
-                <span class="status-yes">內建全音域喇叭</span><br>
-                <span class="status-yes">內建 6 顆 AI 麥克風</span><br>
-                <small>(全功能一體機，隨插即用)</small>
-            </td>
-        </tr>
-        <tr>
-            <td class="spec-name">解析度</td>
-            <td>真 4K UHD / 30fps (主鏡頭與偵測鏡頭皆為高解析度)</td>
-            <td>1080p Full HD / 60fps (採用 Sony 超高感度感應器，縮放後畫質依然紮實)</td>
-            <td>4K UHD / 30fps (在 3 萬內預算提供真實 4K 輸出，畫質非常銳利)</td>
-            <td>4K Ultra HD / 30fps (畫質比一代有顯著提升，噪點更少)</td>
-        </tr>
-		<tr>
-            <td class="spec-name">變焦能力</td>
-            <td>
-				<ul>
-					<li>15 倍混合變焦 (光學 + 高解析數位擴展)</li>
-					<li>透過雙鏡頭聯動，放大後的畫質細節遠超一般 4K 鏡頭。</li>
-				<ul>
-			</td>
-            <td>
-				<ul>
-					<li>36 倍總變焦 (含 12 倍光學變焦)</li>
-					<li>光學變焦能確保拍遠處的人臉不會模糊。</li>
-				<ul>
-			</td>
-            <td>
-				<ul>
-					<li>36 倍總變焦 (12 倍光學變焦 + 3 倍數位變焦)</li>
-					<li>光學變焦性能與 4 萬元的 AVer Pro3 同等級，遠端特寫極清晰。</li>
-				<ul>
-			</td>
-            <td>
-				<ul>
-					<li>4 倍 HD 數位變焦 (無機械光學結構，縮放全靠 AI 裁剪 4K 畫面)</li>
-				<ul>
-			</td>
-        </tr>
-        <tr>
-            <td class="spec-name">AI 特色</td>
-            <td>
-                <ul>
-                    <li>雙鏡頭智能網格</li>
-                    <li>動態講者追蹤</li>
-                    <li>AI 環境亮度適應</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>Smart Composition (智能構圖)</li>
-                    <li>升級版 SmartFrame</li>
-                    <li>預設點自動追蹤</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>自動框選 (Auto Framing)</li>
-                    <li>人臉偵測亮度優化</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>RightSight 2 智能取景</li>
-                    <li>Grid View 智能網格</li>
-                    <li>AI 雜音抑制技術</li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td class="spec-name">最推薦原因</td>
-            <td>解決人數過多畫面過小問題，畫質最細膩。</td>
-            <td>台灣品牌，光學變焦極強，售後服務較穩定。</td>
-            <td>低價位內唯一具備 12 倍光學變焦的 4K 鏡頭。</td>
-            <td>一體化設計，無須額外麥克風及音訊裝置</td>
-        </tr>
-        <tr>
-            <td class="spec-name">購買連結</td>
-            <td><a href="https://www.logitech.com/zh-tw/products/video-conferencing/conference-cameras/rally-ai-camera-pro.960-001759.html?sp=1&searchclick=Logitech" class="link-btn" target="_blank">經銷商詢價</a></td>
-            <td><a href="https://24h.pchome.com.tw/prod/DCAS2V-A900ILMLF" class="link-btn" target="_blank">PChome 購買</a></td>
-            <td><a href="https://www.vctech.com.tw/prod_Info.php?Mid=16&Cid=65&id=226" class="link-btn" target="_blank">經銷商</a></td>
-            <td><a href="https://store.logitech.tw/products/b2b-meetup2?variant=42651115651095" class="link-btn" target="_blank">羅技官方商城</a></td>
-        </tr>
-    </tbody>
-</table>
+        // 上一頁
+        function prevPage() {
+            iframe.contentWindow.postMessage({action: "prev"}, "*");
+        }
 
+        // 下一頁
+        function nextPage() {
+            iframe.contentWindow.postMessage({action: "next"}, "*");
+        }
+
+        // 切換自動翻頁
+        function toggleAutoPlay() {
+            isAutoPlaying = !isAutoPlaying;
+            
+            if (isAutoPlaying) {
+                autoBtn.textContent = "⏹ 停止自動翻頁";
+                autoBtn.classList.add('active');
+                autoInterval = setInterval(() => {
+                    nextPage();
+                }, intervalTime);
+            } else {
+                autoBtn.textContent = "▶ 開啟自動翻頁";
+                autoBtn.classList.remove('active');
+                clearInterval(autoInterval);
+            }
+        }
+
+        // 全螢幕
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {
+                    alert("全螢幕啟動失敗，請手動按 F11");
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // 鍵盤控制
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "ArrowRight") nextPage();
+            if (e.key === "ArrowLeft") prevPage();
+            if (e.key === " ") {  // 空白鍵切換自動翻頁
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // 載入完成提示
+        window.addEventListener('load', () => {
+            console.log("PDF 已載入 - 自動翻頁功能已啟用");
+            pageInfo.textContent = "使用 ← → 或按鈕翻頁";
+        });
+    </script>
 </body>
 </html>
